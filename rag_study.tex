@@ -233,5 +233,127 @@
     and prompt engineering by providing a systematic way to incorporate external knowledge while 
     maintaining efficiency and scalability.
 
-        % \printbibliography[title={Literatura}]
+
+    \section{Retrieval-Augmented Generation}
+    \subsection{RAG Architecture}
+    Retrieval-Augmented Generation represents a significant advancement in language model architecture 
+    by introducing a dynamic knowledge retrieval component into the generation process. Unlike 
+    traditional LLMs that rely solely on their trained parameters, RAG systems maintain a separate 
+    knowledge base that can be queried during inference.
+    \newpage
+    \subsubsection{Components and Their Interactions}
+    The core components of a RAG system include:
+    \begin{itemize}
+    \item \textbf{Query Encoder:} Transforms user queries into dense vector representations
+    \item \textbf{Document Index:} Stores preprocessed documents and their vector embeddings
+    \item \textbf{Retrieval System:} Performs efficient similarity search to find relevant documents
+    \item \textbf{Generator:} The base language model that produces the final response
+    \end{itemize}
+    These components work in concert, with each stage's output serving as input for the next stage in the pipeline (\textit{Figure 2}).
+
+    \begin{figure}[h!]
+        \vspace{1cm}
+        \centering
+        \adjustbox{scale=0.3,center}{\includegraphics{rag_overview.png}}
+        \caption{Overview of the RAG pipeline \cite{prompt_engineering}}
+    \end{figure}
+
+    \newpage
+
+    \subsubsection{Query Processing}
+    Query processing begins with the transformation of the user's input query into a dense vector representation. 
+    This process, known as query embedding, uses the same encoding mechanism applied to documents in the knowledge 
+    base, ensuring compatibility for similarity comparisons. The query encoder typically employs a pre-trained model 
+    such as \textbf{Sentence-BERT} \cite{sentence_bert} to generate these embeddings (\textit{Figure 3}).
+
+    \begin{figure}[h!]
+        \vspace{1cm}
+        \centering
+        \adjustbox{scale=0.3,center}{\includegraphics{sentence_bert.png}}
+        \caption{Overview of the RAG pipeline \cite{prompt_engineering}}
+    \end{figure}
+
+    \subsubsection{Document Retrieval}
+    The document retrieval phase involves:
+    \begin{enumerate}
+    \item Searching the vector database for documents with embeddings similar to the query embedding
+    \item Ranking retrieved documents based on relevance scores
+    \item Selecting the top-K most relevant documents to provide as context
+    \end{enumerate}
+
+    \subsubsection{Response Generation}
+    The final stage combines the retrieved documents with the original query to generate a response. 
+    This process typically involves:
+    \begin{enumerate}
+        \item Constructing a prompt that incorporates both the query and retrieved context
+        \item Passing the augmented prompt to the base language model
+        \item Generating a response that leverages both the model's parametric knowledge and the retrieved information
+    \end{enumerate}
+
+    \subsection{Vector Embeddings in RAG}
+    \subsubsection{Purpose and Importance}
+    Vector embeddings serve as the foundation of efficient information retrieval in RAG systems. 
+    These dense numerical representations capture semantic meaning, allowing for
+    efficient similarity comparisons between queries and documents.
+
+    \subsubsection{Embedding Generation Techniques}
+    Modern RAG systems typically employ transformer-based models for embedding generation. The process involves:
+    \begin{enumerate}
+    \item Tokenizing input text into subword units
+    \item Passing tokens through a neural network architecture
+    \item Aggregating token representations to create a single vector
+    \end{enumerate}
+
+    \newpage
+
+    \subsubsection{Sentence-BERT Architecture}
+    \textbf{Sentence-BERT (SBERT)} represents a significant advancement in embedding generation, 
+    specifically optimized for sentence embeddings. Key features include:
+    \begin{itemize}
+    \item Siamese network architecture for comparing sentence pairs
+    \item Mean pooling of token embeddings (\textit{Figure 4})
+    \item Training objectives optimized for semantic similarity tasks
+    \end{itemize}
+    The architecture employs a "Siamese" network structure where the same BERT model processes both sentences in a pair, ensuring consistent embedding space for queries and documents.
+
+    \begin{figure}[h!]
+        \vspace{1cm}
+        \centering
+        \adjustbox{scale=0.3,center}{\includegraphics{sbert.png}}
+        \caption{Mean pooling in Sentence BERT architecture \cite{prompt_engineering}}
+    \end{figure}
+
+    \newpage
+    \subsubsection{Similarity Metrics}
+    Common similarity metrics used in RAG systems include (\textit{Figure 5}):
+    \begin{itemize}
+    \item \textbf{Cosine Similarity:} Measures the cosine of the angle between vectors, normalized to [-1, 1]
+    \item \textbf{Euclidean Distance:} Calculates the straight-line distance between vectors
+    \item \textbf{Dot Product:} Computes the scalar product of two vectors
+    \end{itemize}
+
+
+    \begin{figure}[h!]
+        \vspace{1cm}
+        \centering
+        \adjustbox{scale=0.5,center}{\includegraphics{rag_metrics.png}}
+        \caption{Overview of different similarity metrics used in RAG databases \cite{rag_metrics}}
+    \end{figure}
+
+    \newpage
+    \subsection{Vector Databases}
+    \subsubsection{Role in RAG Systems}
+    Vector databases serve as the backbone of efficient information retrieval in RAG systems, providing 
+    fast similarity search capabilities and support for real-time updates and queries
+
+    \subsubsection{Efficient Similarity Search}
+    The challenge of similarity search in high-dimensional spaces is addressed through specialized algorithms 
+    that trade perfect accuracy for significant speed improvements. This approach is particularly important 
+    in RAG systems where query latency is critical.
+
+
+
+
+    % \newpage
+    % \printbibliography[title={References}]
 \end{document}
