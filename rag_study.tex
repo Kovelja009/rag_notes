@@ -337,7 +337,7 @@
         \vspace{1cm}
         \centering
         \adjustbox{scale=0.5,center}{\includegraphics{rag_metrics.png}}
-        \caption{Overview of different similarity metrics used in RAG databases \cite{rag_metrics}}
+        \caption{Overview of different similarity metrics used in RAG databases}
     \end{figure}
 
     \newpage
@@ -351,9 +351,97 @@
     that trade perfect accuracy for significant speed improvements. This approach is particularly important 
     in RAG systems where query latency is critical.
 
+    \subsubsection{HNSW Algorithm}
+    The Hierarchical Navigable Small World (HNSW) algorithm
+    \cite{hnsw_paper} provides an efficient solution for searching through large collections of vectors. 
+    The algorithm draws inspiration from the concept of "six degrees of separation" in social networks, where 
+    people are connected through a small number of intermediate acquaintances.
+
+    \subsubsection*{Navigable Small Worlds Concept}
+    In social networks, people maintain both close connections (friends, family) and distant connections 
+    (acquaintances in different cities or countries). These connections make it possible to reach any person 
+    through a relatively small number of intermediaries. HNSW applies this same principle to organize vectors in a 
+    way that makes searching through them highly efficient.
+
+    \pagebreak
+    \subsubsection*{Hierarchical Structure}
+    HNSW organizes vectors in multiple layers, similar to how we might organize a library:
+    \begin{itemize}
+    \item The top layer contains a few widely connected vectors, like the main sections of a library
+    \item Middle layers have more vectors with moderate connections, like book categories
+    \item The bottom layer contains all vectors with local connections, like individual books
+    \end{itemize}
+    This hierarchical structure allows the algorithm to quickly navigate through the vector space, starting from 
+    broad categories and progressively focusing on more specific areas (\textit{Figure 6}).
+
+    \begin{figure}[h!]
+        \vspace{1cm}
+        \centering
+        \adjustbox{scale=0.45,center}{\includegraphics{hnsw.png}}
+        \caption{Search process in HNSW graph \cite{rag_metrics}}
+    \end{figure}
+
+    \pagebreak
+
+    \subsubsection*{Search Process}
+    The search process in HNSW is similar to how a person might navigate a large library:
+    \begin{enumerate}
+    \item Start at the top layer with broad categories
+    \item Find the most promising direction to explore
+    \item Move down to more detailed layers
+    \item Progressively refine the search until finding the most similar items
+    \end{enumerate}
 
 
+    \subsubsection*{Real-World Application}
+    
+    HNSW has proven highly effective in practical applications. For example, it powers the vector search 
+    capability in Qdrant \cite{qdrant}, the vector database used by Twitter's Grok AI system for searching 
+    through tweets in real-time. The algorithm achieves impressive performance, typically finding the most relevant 
+    vectors among millions of options in just milliseconds.
 
-    % \newpage
-    % \printbibliography[title={References}]
+
+    \section{Advantages}
+    \subsection{Benefits of RAG}
+    RAG systems offer three key advantages over traditional language models and prompt engineering approaches: 
+    improved accuracy, dynamic knowledge updates, and cost efficiency.
+    \subsubsection*{Improved Accuracy}
+    By grounding responses in retrieved documents, RAG systems significantly reduce hallucination problems common 
+    in traditional LLMs. The direct access to source documents ensures factual accuracy and enables citation of 
+    specific sources, making responses more reliable and verifiable.
+    \subsubsection*{Dynamic Knowledge Management}
+    Unlike traditional LLMs that require retraining, RAG systems excel at maintaining current information through:
+    \begin{itemize}
+    \item Real-time updates to the knowledge base
+    \item Immediate availability of new information
+    \item Preservation of historical context alongside current data
+    \end{itemize}
+    \subsubsection*{Cost Efficiency}
+    RAG systems provide a cost-effective solution by eliminating the need for frequent model fine-tuning and reducing 
+    computational resource requirements. This approach allows organizations to scale their knowledge bases efficiently 
+    without increasing model size.
+
+    \pagebreak
+    \section{Conclusion}
+    Retrieval-Augmented Generation addresses fundamental limitations of large language models by separating the 
+    knowledge storage from the generation process. The analysis of RAG architecture demonstrates how the combination
+    of dense vector embeddings, efficient similarity search through HNSW, and strategic context integration enables 
+    dynamic knowledge updates without model retraining.
+    
+    The key innovation lies in the system's ability to maintain accuracy while remaining flexible. Through the use of 
+    \textbf{Sentence-BERT} for embedding generation and vector databases for efficient retrieval, RAG systems can process
+    queries in milliseconds while accessing potentially unlimited external knowledge. This approach effectively solves the 
+    knowledge cutoff problem that plagues traditional language models, while avoiding the context window limitations 
+    inherent in prompt engineering approaches.
+    
+    Looking ahead, advances in vector similarity search algorithms and embedding techniques will likely further improve 
+    retrieval accuracy and system efficiency. The ability to seamlessly integrate new information while maintaining fast 
+    query processing makes RAG particularly valuable for applications requiring current, verifiable information, such as 
+    medical research, legal documentation, or technical support systems.
+    
+    RAG represents not just another architecture, but a fundamental shift in how language model capabilities can 
+    evolve – moving from static, parameter-bound knowledge to dynamic, retrievable, and verifiable information processing.
+
+    \newpage
+    \printbibliography[title={References}]
 \end{document}
